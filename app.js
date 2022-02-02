@@ -9,6 +9,12 @@ app.use(Express.json());
 
 app.use("/premiumUser", controllers.premiumUserController);
 
+app.use("/drinkNote", controllers.drinkNoteController);
+
+app.use("/reviews", controllers.reviewController);
+
+app.use("/comments", controllers.reviewController);
+
 dbConnection.authenticate()
     .then(() => dbConnection.sync())
     .then(() => {
