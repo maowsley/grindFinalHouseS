@@ -23,7 +23,7 @@ const validateJWT = async (req,res, next) => {
         console.log("payload -->", payload);
 
         if (payload) {
-            let foundPremiumUser = await PremiumUserModel.findOne({where: {id: payload.id}} );
+            let foundPremiumUser = await PremiumUserModel.findAll({where: {id: payload.id}} );
 
             if (foundPremiumUser) {
                 req.premiumUser = foundPremiumUser;

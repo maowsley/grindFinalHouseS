@@ -8,8 +8,10 @@ const DrinkNote = db.define("drinkNote", {
     },
 
     drinkTemp: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         allowNull: false,
+        
+       
 
     },
 
@@ -19,7 +21,7 @@ const DrinkNote = db.define("drinkNote", {
     },
 
     drinkSize: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         allowNull: false
     },
 

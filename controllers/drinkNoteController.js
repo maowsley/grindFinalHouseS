@@ -7,7 +7,7 @@ let validateJWT = require("../middleware/validate-jwt");
 const {DrinkNoteModel} = require("../models");
 
 
-//post a drinkNote
+//post a drinkNote, local endpoints works 
 router.post("/design", validateJWT, async (req,res) => {
     const {drinkName, drinkTemp, customDrink, drinkSize} = req.body.drinkNote;
     const {id} = req.premiumUser;
@@ -28,7 +28,7 @@ router.post("/design", validateJWT, async (req,res) => {
 });
 
 
-// get all drink notes 
+// get all drink notes. local endpoint works 
 router.get("/", async (req, res) => {
     try {
         const notes = await DrinkNoteModel.findAll();
@@ -40,34 +40,37 @@ router.get("/", async (req, res) => {
 
 
 //get drink notes by drink title 
-
-router.get("/drinkNoteTitle", async (req, res) => {
+router.get("/:drinkName", async (req, res) => {
     const {drinkName} = req.params;
     try {
-        const notes = await DrinkNoteModel.findAll({
+        const results = await DrinkNoteModel.findAll({
             where: {drinkName: drinkName}
         });
+        res.status(200).json(results);
     } catch (err) {
-        res.status(500).json({error:err});
+        res.status(500).json({ error: err});
     }
 });
+
 
 //get drink notes by drink temp hot or cold 
 
-router.get("/drinkNoteTemp", async (req, res) => {
+router.get("/:drinkTemp", async (req,res) => {
     const {drinkTemp} = req.params;
     try {
-        const temp = await DrinkNoteModel.findAll({
+        const temper = await DrinkNoteModel.findAll({
             where: {drinkTemp: drinkTemp}
         });
+        res.status(200).json(temper);
     } catch (err) {
-        res.status(500).json({error:err});
+        res.status(500).json({ error: err});
     }
 });
 
 
 
-//update drink note
+
+//update drink note edit point wlocal endpoint works 
 router.put("/edit/:drinkNoteId", validateJWT, async (req,res) => {
     const {drinkName, customDrink, drinkTemp, drinkSize} = req.body.drinkNote;
     const drinkNoteId = req.params.drinkNoteId;
@@ -98,7 +101,7 @@ router.put("/edit/:drinkNoteId", validateJWT, async (req,res) => {
 });
 
 
-//delete drink note
+//delete drink note local endpoints work 
 router.delete("/delete/:id", validateJWT, async (req, res) => {
     const customerId = req.premiumUser.id;
     const drinkNoteId = req.params.id;

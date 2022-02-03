@@ -12,7 +12,8 @@ const premiumUser = db.define("premiumUser", {
         allowNull: false,
     },
     admin: {
-        type: DataTypes.BOOLEAN(false),
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: true
     },
 });

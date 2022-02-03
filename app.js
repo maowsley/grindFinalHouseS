@@ -15,16 +15,18 @@ app.use("/reviews", controllers.reviewController);
 
 app.use("/comments", controllers.reviewController);
 
-dbConnection.authenticate()
-    .then(() => dbConnection.sync())
-    .then(() => {
-        app.listen(3000, () => {
-            console.log(`[Server]: App is listening on 3000.`);
+try {
+    dbConnection 
+        .authenticate()
+        .then(async() => await dbConnection.sync({force: true}))
+        .then(() => {
+            app.listen(process.env.PORT, () => {
+                console.log(`[SERVER]: App is listening on ${process.env.PORT}`);
+            });
         });
-    })
-    .catch((err) => {
-        console.log(`[Server]: Server crashed. Error = ${err}`);
-    });
-     
+} catch (err) {
+    console.log('[SERVER]: Server crashed');
+    console.log(err);
+}
 
 
