@@ -1,9 +1,9 @@
 let Express = require("express");
 let router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
-
+const CoModel = require("../models")
 //Importing the DrinkNote Model
-const {CommentModel} = require("../models");
+//const {CommentModel} = require("../models");
 
 
 //post a comment to a review
@@ -15,7 +15,7 @@ router.post("/create", validateJWT, async (req,res) => {
         customer: id
     }
     try{
-        const newComment = await CommentModel.create(commentEntry);
+        const newComment = await CoModel.CommentModel.create(commentEntry);
         res.status(200).json(newComment);
     } catch (err) {
         res.status(500).json({error: err});
@@ -28,7 +28,7 @@ router.post("/create", validateJWT, async (req,res) => {
 router.get("/myComments", async (req, res) => {
     const {id} = req.premiumUser;
     try {
-        const userComments = await CommentModel.findAll({
+        const userComments = await CoModel.CommentModel.findAll({
             where: {customer: id}
         });
         res.status(200).json(userComments);
@@ -51,7 +51,7 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
             }
         };
 
-        await CommentModel.destroy(query);
+        await CoModel.CommentModel.destroy(query);
         res.status(200).json({message: "Comment removed. Create new comments with GrindHouse! "});
     } catch (err) {
         res.status(500).json({error: err});

@@ -2,9 +2,9 @@ const { query } = require("express");
 let Express = require("express");
 let router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
-
+const DrinkModel = require("../models")
 //Importing the DrinkNote Model
-const {DrinkNoteModel} = require("../models");
+//const {DrinkNoteModel} = require("../models");
 
 
 //post a drinkNote, local endpoints works 
@@ -19,7 +19,7 @@ router.post("/design", validateJWT, async (req,res) => {
         customer: id
     }
     try{
-        const newDrinkNote = await DrinkNoteModel.create(drinkNoteEntry);
+        const newDrinkNote = await DrinkModel.DrinkNoteModel.create(drinkNoteEntry);
         res.status(200).json(newDrinkNote);
     } catch (err) {
         res.status(500).json({error: err});
@@ -31,7 +31,7 @@ router.post("/design", validateJWT, async (req,res) => {
 // get all drink notes. local endpoint works 
 router.get("/", async (req, res) => {
     try {
-        const notes = await DrinkNoteModel.findAll();
+        const notes = await DrinkModel.DrinkNoteModel.findAll();
         res.status(200).json(notes);
     } catch (err) {
         res.status(500).json({ error: err});
@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
 router.get("/:drinkName", async (req, res) => {
     const {drinkName} = req.params;
     try {
-        const results = await DrinkNoteModel.findAll({
+        const results = await DrinkModel.DrinkNoteModel.findAll({
             where: {drinkName: drinkName}
         });
         res.status(200).json(results);
@@ -58,7 +58,7 @@ router.get("/:drinkName", async (req, res) => {
 router.get("/:drinkTemp", async (req,res) => {
     const {drinkTemp} = req.params;
     try {
-        const temper = await DrinkNoteModel.findAll({
+        const temper = await DrinkModel.DrinkNoteModel.findAll({
             where: {drinkTemp: drinkTemp}
         });
         res.status(200).json(temper);
@@ -93,7 +93,7 @@ router.put("/edit/:drinkNoteId", validateJWT, async (req,res) => {
 
 
     try {
-        const update = await DrinkNoteModel.update(updatedDrinkNote, query);
+        const update = await DrinkModel.DrinkNoteModel.update(updatedDrinkNote, query);
         res.status(200).json(update);
     } catch (err) {
         res.status(500).json({error: err});
@@ -114,7 +114,7 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
             }
         };
 
-        await DrinkNoteModel.destroy(query);
+        await DrinkModel.DrinkNoteModel.destroy(query);
         res.status(200).json({message: "Drink note removed. Create new drinks with GrindHouse! "});
     } catch (err) {
         res.status(500).json({error: err});

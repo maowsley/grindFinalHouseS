@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const {PremiumUserModel} = require("../models");
-
+//const {PremiumUserModel} = require("../models");
+const UserModel = require("../models")
 
 const validateJWT = async (req,res, next) => {
     if (req.method == "OPTIONS") {
@@ -23,7 +23,7 @@ const validateJWT = async (req,res, next) => {
         console.log("payload -->", payload);
 
         if (payload) {
-            let foundPremiumUser = await PremiumUserModel.findAll({where: {id: payload.id}} );
+            let foundPremiumUser = await UserModel.PremiumUserModel.findOne({where: {id: payload.id}} );
 
             if (foundPremiumUser) {
                 req.premiumUser = foundPremiumUser;

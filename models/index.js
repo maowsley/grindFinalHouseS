@@ -12,7 +12,7 @@ const CommentModel = require("./commentmodel");
 
 //associations
 
-PremiumUserModel.hasMany(ReviewModel);
+ PremiumUserModel.hasMany(ReviewModel);
 PremiumUserModel.hasMany(CommentModel);
 PremiumUserModel.hasMany(DrinkNoteModel);
 
@@ -27,11 +27,11 @@ CommentModel.belongsTo(ReviewModel);
 
 
 module.exports = {
-    dbConnection: db,
-    models: {
+    //dbConnection: db,
+    //models: {
     PremiumUserModel,
     DrinkNoteModel,
     ReviewModel,
     CommentModel
-    }
+    //}
 };
