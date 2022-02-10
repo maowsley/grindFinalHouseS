@@ -2,32 +2,32 @@ const {DataTypes} = require("sequelize");
 const db = require("../db");
 
 const DrinkNote = db.define("drinkNote", {
+    id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false
+    },
     drinkName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
 
     drinkTemp: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        
-       
-
+        type: DataTypes.ENUM,
+        values: ["hot", "cold"]
     },
 
-    customDrink: {
+    content: {
         type: DataTypes.STRING,
         allowNull: true
-    },
+     },
 
     drinkSize: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    customer: {
-        type: DataTypes.INTEGER
+        type: DataTypes.ENUM,
+        values: ["small", "medium", "large"]
     }
+
 });
 
 module.exports = DrinkNote;

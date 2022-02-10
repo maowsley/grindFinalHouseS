@@ -1,6 +1,7 @@
 module.exports = {
-    premiumUserController: require('./premiumUserController'),
+    userController: require('./userController'),
     drinkNoteController: require("./drinkNoteController"),
     reviewController: require("./reviewController"),
-    commentController: require("./commentController")
+    commentController: require("./commentController"),
+    coffeesearchController: require("./coffeesearchController")
 };

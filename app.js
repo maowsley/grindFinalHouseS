@@ -8,15 +8,18 @@ const controllers = require("./controllers");
 
 
 
+
 app.use(Express.json());
 
-app.use("/premiumUser", controllers.premiumUserController);
+app.use("/user", controllers.userController)
 
 app.use("/drinkNote", controllers.drinkNoteController);
 
 app.use("/reviews", controllers.reviewController);
 
 app.use("/comments", controllers.commentController);
+
+app.use("/coffee", controllers.coffeesearchController);
 
 try {
 dbConnection.authenticate()
@@ -35,3 +38,5 @@ dbConnection.authenticate()
      console.log('[Server]: server crashed');
      console.log(err);
  }
+
+ 

@@ -2,22 +2,25 @@ let Express = require("express");
 let router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 const CoModel = require("../models")
+//const {UniqueConstraintError} = require("sequelize/lib/errors");
 //Importing the DrinkNote Model
 //const {CommentModel} = require("../models");
 
 
 //post a comment to a review
 router.post("/create", validateJWT, async (req,res) => {
-    const {reply} = req.body.comment;
-    const {id} = req.premiumUser;
-    const commentEntry = {
+    let {reply} = req.body.comment;
+    let {id} = req.review;
+    let commentEntry = {
         reply,
-        customer: id
+        commentId: id
     }
     try{
         const newComment = await CoModel.CommentModel.create(commentEntry);
         res.status(200).json(newComment);
     } catch (err) {
+       
+        
         res.status(500).json({error: err});
     }
     CommentModel.create(commentEntry)
@@ -25,11 +28,11 @@ router.post("/create", validateJWT, async (req,res) => {
 
 
 // get comments by customer 
-router.get("/myComments", async (req, res) => {
-    const {id} = req.premiumUser;
+router.get("/myComments", validateJWT, async (req, res) => {
+    let {id} = req.review;
     try {
         const userComments = await CoModel.CommentModel.findAll({
-            where: {customer: id}
+            where: {commentId: id}
         });
         res.status(200).json(userComments);
     } catch (err) {
@@ -37,17 +40,27 @@ router.get("/myComments", async (req, res) => {
     }
 });
 
+//get all comments 
+router.get("/", async (req,res) => {
+    try {
+        const re = await CoModel.CommentModel.findAll();
+        res.status(200).json(re);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+});
+
 
 //delete review comments
-router.delete("/delete/:id", validateJWT, async (req, res) => {
-    const customerId = req.premiumUser.id;
-    const commentId = req.params.id;
+router.delete("/delete/:id", validateJWT,  async (req, res) => {
+    let customerId = req.review.id;
+    let commentId = req.params.id;
 
     try {
         const query = {
             where: {
-                id: commentId,
-                customer: customerId
+                id: customerId,
+                customer: commentId
             }
         };
 

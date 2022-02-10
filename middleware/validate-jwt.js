@@ -23,10 +23,10 @@ const validateJWT = async (req,res, next) => {
         console.log("payload -->", payload);
 
         if (payload) {
-            let foundPremiumUser = await UserModel.PremiumUserModel.findOne({where: {id: payload.id}} );
+            let foundUser = await UserModel.UserModel.findOne({where: {id: payload.id}} );
 
-            if (foundPremiumUser) {
-                req.premiumUser = foundPremiumUser;
+            if (User) {
+                req.User = foundUser;
                 next();
             } else {
                 res.status(400).send({message: "Oh no, Not Authorized"});

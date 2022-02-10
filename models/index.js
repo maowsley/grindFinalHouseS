@@ -1,7 +1,7 @@
 
-const db = require('../db');
+//const db = require('../confid');
 
-const PremiumUserModel = require("./premiumusermodel");
+const UserModel = require("./usermodel");
 
 const DrinkNoteModel = require("./drinknotemodel");
 
@@ -9,29 +9,54 @@ const ReviewModel = require("./reviewmodel");
 
 const CommentModel = require("./commentmodel");
 
+const CoffeeModel = require("./coffeemodel");
+
 
 //associations
 
- PremiumUserModel.hasMany(ReviewModel);
-PremiumUserModel.hasMany(CommentModel);
-PremiumUserModel.hasMany(DrinkNoteModel);
+CommentModel.belongsTo(ReviewModel, {
+    foreignKey: {
+        name: 'postedBy'
+    }
+});
 
-
-
-
-ReviewModel.belongsTo(PremiumUserModel);
 ReviewModel.hasMany(CommentModel);
+ReviewModel.belongsTo(UserModel, {
+    foreignKey: {
+        name: 'createdBy'
+    }
+});
 
+UserModel.hasMany(ReviewModel);
 
-CommentModel.belongsTo(ReviewModel);
+UserModel.hasMany(DrinkNoteModel);
+DrinkNoteModel.belongsTo(UserModel, {
+    foreignKey: {
+        name: 'createdBy'
+    }
+});
+
+CoffeeModel.hasMany(CoffeeModel, {as: "item"}, {
+    foreignKey: {
+        name: "item"
+    }
+});
+
 
 
 module.exports = {
     //dbConnection: db,
     //models: {
-    PremiumUserModel,
+    UserModel,
     DrinkNoteModel,
     ReviewModel,
-    CommentModel
+    CommentModel,
+    CoffeeModel
     //}
 };
+
+//hasOne, belongsTo, hasMany, belongsToMany
+
+//one-to-one =>  hasOne, belongsTo 
+
+

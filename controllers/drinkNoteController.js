@@ -3,14 +3,15 @@ let Express = require("express");
 let router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 const DrinkModel = require("../models")
+//const {UniqueConstraintError} = require("sequelize/lib/errors");
 //Importing the DrinkNote Model
 //const {DrinkNoteModel} = require("../models");
 
 
-//post a drinkNote, local endpoints works 
+//post a drinkNote, local endpoints works!!!
 router.post("/design", validateJWT, async (req,res) => {
     const {drinkName, drinkTemp, customDrink, drinkSize} = req.body.drinkNote;
-    const {id} = req.premiumUser;
+    const {id} = req.User;
     const drinkNoteEntry = {
         drinkName,
         drinkSize, 
@@ -22,13 +23,14 @@ router.post("/design", validateJWT, async (req,res) => {
         const newDrinkNote = await DrinkModel.DrinkNoteModel.create(drinkNoteEntry);
         res.status(200).json(newDrinkNote);
     } catch (err) {
+        
         res.status(500).json({error: err});
     }
-    DrinkNoteModel.create(drinkNoteEntry)
+    DrinkModel.DrinkNoteModel.create(drinkNoteEntry)
 });
 
 
-// get all drink notes. local endpoint works 
+// get all drink notes. local endpoint works!!!
 router.get("/", async (req, res) => {
     try {
         const notes = await DrinkModel.DrinkNoteModel.findAll();
@@ -39,7 +41,7 @@ router.get("/", async (req, res) => {
 });
 
 
-//get drink notes by drink title 
+//get drink notes by drink title works!!!
 router.get("/:drinkName", async (req, res) => {
     const {drinkName} = req.params;
     try {
@@ -53,25 +55,25 @@ router.get("/:drinkName", async (req, res) => {
 });
 
 
-//get drink notes by drink temp hot or cold 
+/*get drink notes by drink temp hot or cold 
 
-router.get("/:drinkTemp", async (req,res) => {
-    const {drinkTemp} = req.params;
+router.get("/:drinkSize", async (req,res) => {
+    const {drinkSize} = req.params;
     try {
-        const temper = await DrinkModel.DrinkNoteModel.findAll({
-            where: {drinkTemp: drinkTemp}
+        const size = await DrinkModel.DrinkNoteModel.findAll({
+            where: {drinkSize: drinkSize}
         });
-        res.status(200).json(temper);
+        res.status(200).json(size);
     } catch (err) {
         res.status(500).json({ error: err});
     }
-});
+}); */
 
 
 
 
-//update drink note edit point wlocal endpoint works 
-router.put("/edit/:drinkNoteId", validateJWT, async (req,res) => {
+//update drink note edit point local endpoint works!!!!
+router.put("/:drinkNoteId", validateJWT, async (req,res) => {
     const {drinkName, customDrink, drinkTemp, drinkSize} = req.body.drinkNote;
     const drinkNoteId = req.params.drinkNoteId;
     const premiumUser = req.premiumUser.id;
@@ -101,8 +103,8 @@ router.put("/edit/:drinkNoteId", validateJWT, async (req,res) => {
 });
 
 
-//delete drink note local endpoints work 
-router.delete("/delete/:id", validateJWT, async (req, res) => {
+//delete drink note local endpoints work!!
+router.delete("/:id", validateJWT, async (req, res) => {
     const customerId = req.premiumUser.id;
     const drinkNoteId = req.params.id;
 
@@ -115,7 +117,7 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
         };
 
         await DrinkModel.DrinkNoteModel.destroy(query);
-        res.status(200).json({message: "Drink note removed. Create new drinks with GrindHouse! "});
+        res.status(200).json({message: "Drink note removed. Create new coffee notes with GrindHouse! "});
     } catch (err) {
         res.status(500).json({error: err});
     }
