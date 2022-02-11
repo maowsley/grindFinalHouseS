@@ -92,7 +92,7 @@ router.post("/login", async (req,res ) => {
     });
 
 
-    // GET
+    // GET admin
 router.get('/admin', (req, res) => {
     models.UserModel.findAll({
         include: [

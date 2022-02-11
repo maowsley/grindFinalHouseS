@@ -1,83 +1,75 @@
-let Express = require("express");
-let router = Express.Router();
-let validateJWT = require("../middleware/validate-jwt");
-const CoModel = require("../models")
-//const {UniqueConstraintError} = require("sequelize/lib/errors");
-//Importing the DrinkNote Model
-//const {CommentModel} = require("../models");
+const router = require("express").Router();
+const {models} = require("../models");
+const validateJWT = require("../middleware/validate-jwt");
 
 
 //post a comment to a review
 router.post("/create", validateJWT, async (req,res) => {
-    let {reply} = req.body.comment;
-    let {id} = req.review;
-    let commentEntry = {
-        reply,
-        commentId: id
-    }
-    try{
-        const newComment = await CoModel.CommentModel.create(commentEntry);
-        res.status(200).json(newComment);
-    } catch (err) {
-       
-        
-        res.status(500).json({error: err});
-    }
-    CommentModel.create(commentEntry)
+
+
+    const created_at = new Date();
+    const newComment = req.body.comment;
+
+    await models.CommentModel.create({
+        review_id: newComment.review_id,
+        user_id: req.user.id,
+        content: newComment.comment,
+        commenter_username: req.user.username,
+        created_at: created_at
+    })
+
+    .then(comment => {
+        res.json(comment);
+    });
 });
 
+//update comment
+router.put('/edit/comment_id', validateJWT, async (req, res) => {
+    
+    const updated_at = new Date();
+    const updateComment = req.body.review;
 
-// get comments by customer 
-router.get("/myComments", validateJWT, async (req, res) => {
-    let {id} = req.review;
-    try {
-        const userComments = await CoModel.CommentModel.findAll({
-            where: {commentId: id}
-        });
-        res.status(200).json(userComments);
-    } catch (err) {
-        res.status(500).json({error:err});
-    }
+    models.CommentModel.update({
+        content: updateComment.content,
+        update_at: updated_at
+    }, {
+        where: {
+            id: req.params.comment_id
+        }
+    })
+
+    .then(comment => res.status(200).json(comment))
+    .catch( err => res.json({
+        error: err
+    }))
 });
 
-//get all comments 
-router.get("/", async (req,res) => {
-    try {
-        const re = await CoModel.CommentModel.findAll();
-        res.status(200).json(re);
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
+// delete comment
+router.delete('/delete/:comment_id', validateJWT, async (req,res) => {
+    models.CommentModel.destory({
+        where: {
+            id: req.params.comment_id
+        }
+    })
+
+    .then(comment => res.status(200).json(comment))
+    .catch(err => res.json({
+        error: err
+    }))
 });
 
-
-//delete review comments
-router.delete("/delete/:id", validateJWT,  async (req, res) => {
-    let customerId = req.review.id;
-    let commentId = req.params.id;
-
-    try {
-        const query = {
-            where: {
-                id: customerId,
-                customer: commentId
-            }
-        };
-
-        await CoModel.CommentModel.destroy(query);
-        res.status(200).json({message: "Comment removed. Create new comments with GrindHouse! "});
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
-
+// get comment
+router.get('/comment/review_id', (req,res) => {
+    models.CommentModel.findAll({
+        where: {
+            review_id: req.params.review_id
+        }
+    })
+    .then(comment => res.status(200).json(comment))
+    .catch(err => res.json({
+        err:err
+    }))
 });
-
-
-
-
-
-
-
 
 
 module.exports = router;

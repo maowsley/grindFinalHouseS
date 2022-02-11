@@ -8,6 +8,16 @@ const DrinkNote = db.define("drinkNote", {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
+
+    user_id: {
+        type: DataTypes.UUID,
+        allowNull: false
+    },
+    
+    user_username: {
+        type: DataTypes.STRING
+    },
+
     drinkName: {
         type: DataTypes.STRING,
         allowNull: false,

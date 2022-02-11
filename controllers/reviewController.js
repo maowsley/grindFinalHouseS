@@ -30,16 +30,48 @@ router.post("/create", validateJWT, async (req,res) => {
     })
 });
 
-//get all reviews
+//get all reviews with comments 
 
-router.get("/", async (req,res) => {
-    try {
-      const reviews = await models.ReviewModel.findAll();
-        res.status(200).json(reviews);
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
-});
+router.get('/reviews', (req,res) => {
+    models.ReviewModel.findAll({
+        include: [
+            {
+                model:models.CommentModel
+            }
+        ]
+    })
+
+    .then(review => {
+        const resObj = review.map(review => {
+            return Object.assign(
+                {},
+                {
+                    review_id: review.id,
+                    user_id: review.user_id,
+                    user_username: review.user_username,
+                    title: review.title,
+                    content: review.content,
+                    rating: review.rating,
+                    created_at: review.created_at,
+                    comment: review.comment.map( comment => {
+
+
+                        return Object.assign(
+                            {},
+                            {
+                                comment_id: comment.id,
+                                review_id: comment.review_id,
+                                commenter_username: comment.commenter_username,
+                                content: comment.content
+                            }  
+                        )
+                    })
+                }
+            )
+        })
+        res.json(resObj)
+    })
+ });
 
 // get review by rating
 router.get("/:rating", async(req,res) => {
@@ -56,7 +88,7 @@ router.get("/:rating", async(req,res) => {
 });
 
 //update review 
-router.put('/review/:review_id', validateJWT, (req, res) => {
+router.put('/edit/:review_id', validateJWT, (req, res) => {
 
     const updated_at = new Date();
     const updateReview = req.body.review;

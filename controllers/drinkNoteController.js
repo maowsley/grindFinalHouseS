@@ -1,130 +1,98 @@
-const { query } = require("express");
-let Express = require("express");
-let router = Express.Router();
-let validateJWT = require("../middleware/validate-jwt");
-const DrinkModel = require("../models")
-//const {UniqueConstraintError} = require("sequelize/lib/errors");
-//Importing the DrinkNote Model
-//const {DrinkNoteModel} = require("../models");
+const router = require("express").Router();
+const {models} = require("../models")
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const validateJWT = require("../middleware/validate-jwt");
+
+// post drink note
+router.post('/create', validateJWT,  async (req,res) => {
+    const newNote = req.body.drinkNote;
 
 
-//post a drinkNote, local endpoints works!!!
-router.post("/design", validateJWT, async (req,res) => {
-    const {drinkName, drinkTemp, customDrink, drinkSize} = req.body.drinkNote;
-    const {id} = req.User;
-    const drinkNoteEntry = {
-        drinkName,
-        drinkSize, 
-        drinkTemp, 
-        customDrink,
-        customer: id
-    }
-    try{
-        const newDrinkNote = await DrinkModel.DrinkNoteModel.create(drinkNoteEntry);
-        res.status(200).json(newDrinkNote);
-    } catch (err) {
-        
-        res.status(500).json({error: err});
-    }
-    DrinkModel.DrinkNoteModel.create(drinkNoteEntry)
+     await models.DrinkNoteModel.create({
+        user_id: req.user.id,
+        user_username: req.user.username,
+        drinkName: newNote.drinkName,
+        drinkTemp: newNote.drinkTemp,
+        content: newNote.content,
+        drinkSize: newNote.drinkSize
+    })
+
+    .then( drinkNote => {
+        res.json(drinkNote);
+    })
+    .catch(err => {
+        res.json(err)
+    })
 });
 
-
-// get all drink notes. local endpoint works!!!
-router.get("/", async (req, res) => {
-    try {
-        const notes = await DrinkModel.DrinkNoteModel.findAll();
-        res.status(200).json(notes);
-    } catch (err) {
-        res.status(500).json({ error: err});
-    }
-});
+//update note 
+router.put('edit/:drinkNote_id', validateJWT, async (req, res) => {
+    
+    const updateNote = req.body.drinkNote;
 
 
-//get drink notes by drink title works!!!
-router.get("/:drinkName", async (req, res) => {
-    const {drinkName} = req.params;
-    try {
-        const results = await DrinkModel.DrinkNoteModel.findAll({
-            where: {drinkName: drinkName}
-        });
-        res.status(200).json(results);
-    } catch (err) {
-        res.status(500).json({ error: err});
-    }
-});
+    await models.DrinkNoteModel.update({
+        drinkName: updateNote.drinkName,
+        drinkTemp: updateNote.drinkTemp,
+        content: updateNote.content,
+        drinkSize: updateNote.drinkSize
 
 
-/*get drink notes by drink temp hot or cold 
-
-router.get("/:drinkSize", async (req,res) => {
-    const {drinkSize} = req.params;
-    try {
-        const size = await DrinkModel.DrinkNoteModel.findAll({
-            where: {drinkSize: drinkSize}
-        });
-        res.status(200).json(size);
-    } catch (err) {
-        res.status(500).json({ error: err});
-    }
-}); */
-
-
-
-
-//update drink note edit point local endpoint works!!!!
-router.put("/:drinkNoteId", validateJWT, async (req,res) => {
-    const {drinkName, customDrink, drinkTemp, drinkSize} = req.body.drinkNote;
-    const drinkNoteId = req.params.drinkNoteId;
-    const premiumUser = req.premiumUser.id;
-
-    const query = {
+    }, { 
         where: {
-            id: drinkNoteId,
-            customer: premiumUser
+        id: req.params.drinkNote_id
+    }
+
+    })
+
+        .then(drinkNote => res.status(200).json(drinkNote))
+        .catch(err => res.json ({
+            error:err
+    }))
+        
+});
+
+//delete note 
+router.delete('/delete/:drinkNote_id', validateJWT, (req, res) => {
+    models.DrinkNoteModel.destory({
+        where: {
+            id: req.params.drinkNote_id
         }
-    };
+    })
 
-
-    const updatedDrinkNote = {
-        drinkName: drinkName,
-        drinkTemp: drinkTemp,
-        drinkSize: drinkSize,
-        customDrink: customDrink
-    };
-
-
-    try {
-        const update = await DrinkModel.DrinkNoteModel.update(updatedDrinkNote, query);
-        res.status(200).json(update);
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
+    .then(drinkNote => res.status(200).json(drinkNote))
+    .catch(err => res.json({
+        error:err
+    }))
 });
 
 
-//delete drink note local endpoints work!!
-router.delete("/:id", validateJWT, async (req, res) => {
-    const customerId = req.premiumUser.id;
-    const drinkNoteId = req.params.id;
+//get all by drink temp
+router.get('/:drinkTemp', (req, res) => {
+    models.DrinkNoteModel.findAll({
+        where: {
+            drinkTemp: req.params.drinkTemp
+        }
+    })
 
-    try {
-        const query = {
-            where: {
-                id: drinkNoteId,
-                customer: customerId
-            }
-        };
-
-        await DrinkModel.DrinkNoteModel.destroy(query);
-        res.status(200).json({message: "Drink note removed. Create new coffee notes with GrindHouse! "});
-    } catch (err) {
-        res.status(500).json({error: err});
-    }
-
+    .then(drinkNote => res.status(200).json(drinkNote))
+    .catch(err => res.json({
+        error: err
+    }))
 });
 
-
-
+//get all by drink size
+router.get("/drinkSize", (req,res) => {
+    models.DrinkNoteModel.findAll({
+        where: {
+            drinkSize: req.params.drinkSize
+        }
+    })
+    .then(drinkNote => res.status(200).json(drinkNote))
+    .catch(err => res.json({
+        error: err
+    }))
+});
 
 module.exports = router;
