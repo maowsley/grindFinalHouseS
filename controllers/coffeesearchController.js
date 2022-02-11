@@ -5,7 +5,7 @@ const {models} = require("../models")
 //const validateJWT = require("../middleware/validate-jwt");
 
 //get all coffee
-router.get('/', (req,res) => {
+router.get('/',  async (req,res) => {
 
         try {
             const coffees = await models.CoffeeModel.findAll();

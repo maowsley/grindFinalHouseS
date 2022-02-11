@@ -3,16 +3,19 @@ const {models} = require("../models")
 const {UniqueConstraintError} = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
+const created_at = new Date();
 
 //Register new user endpoint works 
 
+
 router.post("/signup", async (req,res) => {
     
+    
     let {username, password, role} = req.body.user;
-    const created_at = new Date(),
+    
     try{
-        const User = await models.UserModel.create({
+       
+        let User = await models.UserModel.create({
             username,
             password: bcrypt.hashSync(password, 10),
             role: role,

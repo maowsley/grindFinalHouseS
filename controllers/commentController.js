@@ -59,8 +59,8 @@ router.delete('/delete/:comment_id', validateJWT, async (req,res) => {
 });
 
 // get comment
-router.get('/comment/review_id', (req,res) => {
-    models.CommentModel.findAll({
+router.get('/comment/review_id', async (req,res) => {
+   await  models.CommentModel.findAll({
         where: {
             review_id: req.params.review_id
         }

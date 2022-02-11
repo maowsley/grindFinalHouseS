@@ -88,7 +88,7 @@ router.get("/:rating", async(req,res) => {
 });
 
 //update review 
-router.put('/edit/:review_id', validateJWT, (req, res) => {
+router.put('/edit/:review_id', validateJWT, async (req, res) => {
 
     const updated_at = new Date();
     const updateReview = req.body.review;
