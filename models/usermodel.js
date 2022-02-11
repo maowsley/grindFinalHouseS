@@ -5,10 +5,10 @@ const User= db.define("user", {
 
 
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull:false
+        //defaultValue: DataTypes.UUIDV4,
+        //allowNull: false
     },
     username: {
         type: DataTypes.STRING(100),

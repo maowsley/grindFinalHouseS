@@ -46,13 +46,13 @@ CoffeeModel.hasMany(CoffeeModel, {as: "item"}, {
 
 module.exports = {
     //dbConnection: db,
-    //models: {
+    models: {
     UserModel,
     DrinkNoteModel,
     ReviewModel,
     CommentModel,
     CoffeeModel
-    //}
+    }
 };
 
 //hasOne, belongsTo, hasMany, belongsToMany

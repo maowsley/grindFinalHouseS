@@ -3,9 +3,8 @@ const db = require("../db");
 
 const DrinkNote = db.define("drinkNote", {
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
 
@@ -13,7 +12,7 @@ const DrinkNote = db.define("drinkNote", {
         type: DataTypes.UUID,
         allowNull: false
     },
-    
+
     user_username: {
         type: DataTypes.STRING
     },

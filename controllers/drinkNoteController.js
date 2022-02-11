@@ -46,7 +46,7 @@ router.put('edit/:drinkNote_id', validateJWT, async (req, res) => {
 
     })
 
-        .then(drinkNote => res.status(200).json(drinkNote))
+        .then(drinkNote => res.status(200).json(drinkNote, {message: "Coffee Note Updated"}))
         .catch(err => res.json ({
             error:err
     }))
@@ -54,14 +54,14 @@ router.put('edit/:drinkNote_id', validateJWT, async (req, res) => {
 });
 
 //delete note 
-router.delete('/delete/:drinkNote_id', validateJWT, (req, res) => {
-    models.DrinkNoteModel.destory({
+router.delete('/delete/:drinkNote_id', validateJWT, async (req, res) => {
+    await models.DrinkNoteModel.destory({
         where: {
             id: req.params.drinkNote_id
         }
     })
 
-    .then(drinkNote => res.status(200).json(drinkNote))
+    .then(drinkNote => res.status(200).json(drinkNote, {message: "Coffee Note Removed"}))
     .catch(err => res.json({
         error:err
     }))

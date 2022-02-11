@@ -4,9 +4,9 @@ const db = require("../db");
 const Comment = db.define("comment", {
 
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        //defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
     comment_id: {

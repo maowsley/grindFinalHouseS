@@ -106,7 +106,7 @@ router.put('/edit/:review_id', validateJWT, async (req, res) => {
             id: req.params.review_id
         }
     })
-        .then(post => res.status(200).json(post))
+        .then(post => res.status(200).json(post, {message: "Review Updated"}))
         .catch(err => res.json({
             error: err
         }))
@@ -120,7 +120,7 @@ router.delete("/delete/:review_id", validateJWT, async (req, res) => {
       }
   })
 
-  .then(review => res.status(200).json(review))
+  .then(review => res.status(200).json(review, {message: "Review Removed"}))
   .catch(err => res.json({
       error:err
   }))

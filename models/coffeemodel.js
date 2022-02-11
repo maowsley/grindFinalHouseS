@@ -4,9 +4,9 @@ const db = require("../db");
 
 const Coffee = db.define ("search", {
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        //defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
 

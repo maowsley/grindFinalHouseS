@@ -3,7 +3,6 @@ const {models} = require("../models")
 const {UniqueConstraintError} = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const created_at = new Date();
 
 //Register new user endpoint works 
 
@@ -18,15 +17,15 @@ router.post("/signup", async (req,res) => {
         let User = await models.UserModel.create({
             username,
             password: bcrypt.hashSync(password, 10),
-            role: role,
-            created_at: created_at
+            role: role
+            
         });
 
-        let token = jwt.sign({id: User.id}, env.JWT_SECRET, {expiresIn: 60*60*24});
+        let token = jwt.sign({id: User.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
 
         res.status(201).json({
             message: "Customer registerd. Welcome to the GrindHouse!",
-            user: user,
+            user: User,
             sessionToken: token
         });
     } catch (err) {
@@ -111,7 +110,7 @@ router.get('/admin', (req, res) => {
     }).then(users => {
         const resObj = users.map(user => {
 
-            // tidy up user data
+            //  user data
             return Object.assign(
                 {},
                 {
@@ -120,7 +119,7 @@ router.get('/admin', (req, res) => {
                     role: user.role,
                     review: user.review.map(review => {
 
-                        // tidy up post data
+                        // review data
                         return Object.assign(
                             {},
                             {
@@ -129,7 +128,7 @@ router.get('/admin', (req, res) => {
                                 content: review.content,
                                 comment: review.comment.map(comment => {
 
-                                    // tidy up comment data
+                                    //  comment data
                                     return Object.assign(
                                         {},
                                         {

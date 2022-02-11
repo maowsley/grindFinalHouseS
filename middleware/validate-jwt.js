@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 //const {PremiumUserModel} = require("../models");
-const UserModel = require("../models")
+const {models} = require("../models")
 
 const validateJWT = async (req,res, next) => {
     if (req.method == "OPTIONS") {
@@ -23,10 +23,12 @@ const validateJWT = async (req,res, next) => {
         console.log("payload -->", payload);
 
         if (payload) {
-            let foundUser = await UserModel.UserModel.findOne({where: {id: payload.id}} );
+            let foundUser = await models.UserModel.findOne({where: {id: payload.id}} );
+            console.log("foundUser -->", foundUser);
 
-            if (User) {
-                req.User = foundUser;
+            if (foundUser) {
+                console.log("request -->", req);
+                req.user = foundUser;
                 next();
             } else {
                 res.status(400).send({message: "Oh no, Not Authorized"});
