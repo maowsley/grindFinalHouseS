@@ -38,7 +38,7 @@ router.put('/edit/comment_id', validateJWT, async (req, res) => {
         }
     })
 
-    .then(comment => res.status(200).json(comment, {message: "Comment Updated"}))
+    .then(comment => res.status(200).json(comment))
     .catch( err => res.json({
         error: err
     }))
@@ -52,7 +52,7 @@ router.delete('/delete/:comment_id', validateJWT, async (req,res) => {
         }
     })
 
-    .then(comment => res.status(200).json(comment, {message: "Comment Removed"}))
+    .then(comment => res.status(200).json(comment))
     .catch(err => res.json({
         error: err
     }))

@@ -3,12 +3,12 @@ const db = require("../db");
 
 
 const Coffee = db.define ("search", {
-    id: {
+   /* id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        //defaultValue: DataTypes.UUIDV4,
+        defaultValue: DataTypes.INTEGER,
         allowNull: false
-    },
+    }, */
 
     coffee_name: {
         type: DataTypes.STRING,

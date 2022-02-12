@@ -3,12 +3,12 @@ const db = require("../db");
 
 const Comment = db.define("comment", {
 
-    id: {
+   /* id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        //defaultValue: DataTypes.UUIDV4,
+        defaultValue: DataTypes.INTEGER,
         allowNull: false
-    },
+    }, */
     comment_id: {
         type: DataTypes.UUID,
         allowNull:false,

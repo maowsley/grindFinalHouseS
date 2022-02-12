@@ -1,15 +1,15 @@
-const {DataTypes} = require("sequelize");
+const {DataTypes, Sequelize} = require("sequelize");
 const db = require("../db");
 
 const DrinkNote = db.define("drinkNote", {
-    id: {
+    /*id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false
-    },
+    }, */
 
     user_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
 
@@ -24,7 +24,8 @@ const DrinkNote = db.define("drinkNote", {
 
     drinkTemp: {
         type: DataTypes.ENUM,
-        values: ["hot", "cold"]
+        values: ["hot", "cold"],
+        allowNull: false
     },
 
     content: {
@@ -32,11 +33,12 @@ const DrinkNote = db.define("drinkNote", {
         allowNull: true
      },
 
-    drinkSize: {
+     
+    size: {
         type: DataTypes.ENUM,
-        values: ["small", "medium", "large"]
-    }
-
+        values: ["small", "medium", "large"], 
+        allowNull: false
+     }
 });
 
 module.exports = DrinkNote;

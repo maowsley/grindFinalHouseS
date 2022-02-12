@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const validateJWT = require("../middleware/validate-jwt");
 
-// post drink note
+
+// post drink note works
 router.post('/create', validateJWT,  async (req,res) => {
     const newNote = req.body.drinkNote;
 
@@ -15,7 +16,7 @@ router.post('/create', validateJWT,  async (req,res) => {
         drinkName: newNote.drinkName,
         drinkTemp: newNote.drinkTemp,
         content: newNote.content,
-        drinkSize: newNote.drinkSize
+        size: newNote.size
     })
 
     .then( drinkNote => {
@@ -26,8 +27,8 @@ router.post('/create', validateJWT,  async (req,res) => {
     })
 });
 
-//update note 
-router.put('edit/:drinkNote_id', validateJWT, async (req, res) => {
+//update note works 
+router.put('/edit/:drinkNote_id', validateJWT, async (req, res) => {
     
     const updateNote = req.body.drinkNote;
 
@@ -38,39 +39,41 @@ router.put('edit/:drinkNote_id', validateJWT, async (req, res) => {
         content: updateNote.content,
         drinkSize: updateNote.drinkSize
 
-
-    }, { 
-        where: {
-        id: req.params.drinkNote_id
-    }
-
+    }, {
+       
+            where: {
+                id:req.params.drinkNote_id
+                
+            }
+        
     })
+     
 
-        .then(drinkNote => res.status(200).json(drinkNote, {message: "Coffee Note Updated"}))
+        .then(drinkNote => res.status(200).json(drinkNote))
         .catch(err => res.json ({
             error:err
     }))
         
 });
 
-//delete note 
+//delete note works
 router.delete('/delete/:drinkNote_id', validateJWT, async (req, res) => {
-    await models.DrinkNoteModel.destory({
+    await models.DrinkNoteModel.destroy({
         where: {
             id: req.params.drinkNote_id
         }
     })
 
-    .then(drinkNote => res.status(200).json(drinkNote, {message: "Coffee Note Removed"}))
+    .then(drinkNote => res.status(200).json(drinkNote))
     .catch(err => res.json({
         error:err
     }))
 });
 
 
-//get all by drink temp
-router.get('/:drinkTemp', (req, res) => {
-    models.DrinkNoteModel.findAll({
+//get all by drink temp works
+router.get("/temp/:drinkTemp", async (req, res) => {
+    await models.DrinkNoteModel.findAll({
         where: {
             drinkTemp: req.params.drinkTemp
         }
@@ -80,19 +83,19 @@ router.get('/:drinkTemp', (req, res) => {
     .catch(err => res.json({
         error: err
     }))
-});
+}); 
 
-//get all by drink size
-router.get("/drinkSize", (req,res) => {
-    models.DrinkNoteModel.findAll({
-        where: {
-            drinkSize: req.params.drinkSize
-        }
-    })
-    .then(drinkNote => res.status(200).json(drinkNote))
-    .catch(err => res.json({
-        error: err
-    }))
-});
+//get all by drink size works
+router.get("/size/:size", async(req,res) => {
+  await models.DrinkNoteModel.findAll({
+      where: {
+          size: req.params.size
+      }
+  })
 
+  .then(drinkNote => res.status(200).json(drinkNote))
+  .catch(err => res.json({
+      error: err
+  }))
+});
 module.exports = router;
