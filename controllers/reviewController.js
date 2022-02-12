@@ -3,9 +3,9 @@ const {models} = require("../models")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const validateJWT = require("../middleware/validate-jwt");
+//const {model} = require('../config/db');
 
-
-//post a review on coffee drinks
+//post a review on coffee drinks works 
 router.post("/create", validateJWT, async (req,res) => {
 
     const created_at = new Date();
@@ -30,19 +30,19 @@ router.post("/create", validateJWT, async (req,res) => {
     })
 });
 
-//get all reviews with comments 
+//get all reviews with comments works
 
-router.get('/reviews', (req,res) => {
-    models.ReviewModel.findAll({
+router.get('/',  async (req, res) => {
+    await models.ReviewModel.findAll({
         include: [
             {
-                model:models.CommentModel
+                 model:  models.CommentModel,
             }
         ]
     })
 
-    .then(review => {
-        const resObj = review.map(review => {
+    .then(reviews => {
+        const results = reviews?.map(review => {
             return Object.assign(
                 {},
                 {
@@ -53,7 +53,7 @@ router.get('/reviews', (req,res) => {
                     content: review.content,
                     rating: review.rating,
                     created_at: review.created_at,
-                    comment: review.comment.map( comment => {
+                    comment: reviews.comment?.map( comment => {
 
 
                         return Object.assign(
@@ -69,25 +69,25 @@ router.get('/reviews', (req,res) => {
                 }
             )
         })
-        res.json(resObj)
+        res.json(results)
     })
  });
 
-// get review by rating
-router.get("/:rating", async(req,res) => {
+// get review by rating works 
+router.get("/rating/:rating", async(req,res) => {
    await models.ReviewModel.findAll({
        where: {
            rating: req.params.rating
        }
    })
 
-   .then(review => res.status(200).json(review))
+   .then(reviews => res.status(200).json(reviews))
    .catch(err => res.json({
        error:err
    }));
 });
 
-//update review 
+//update review works
 router.put('/edit/:review_id', validateJWT, async (req, res) => {
 
     const updated_at = new Date();
@@ -106,17 +106,17 @@ router.put('/edit/:review_id', validateJWT, async (req, res) => {
             id: req.params.review_id
         }
     })
-        .then(post => res.status(200).json(review))
+        .then(review => res.status(200).json(review))
         .catch(err => res.json({
             error: err
         }))
 })
 
-//delete review
+//delete review works 
 router.delete("/delete/:review_id", validateJWT, async (req, res) => {
-  await models.ReviewModel.destory({
+  await models.ReviewModel.destroy({
       where: {
-          id: this.params.review_id
+          id: req.params.review_id
       }
   })
 

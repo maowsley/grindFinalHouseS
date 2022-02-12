@@ -1,5 +1,5 @@
 
-//const db = require('../confid');
+//const db = require('../config');
 
 const UserModel = require("./usermodel");
 
