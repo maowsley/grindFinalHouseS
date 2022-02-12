@@ -10,8 +10,8 @@ const Comment = db.define("comment", {
         allowNull: false
     }, */
     comment_id: {
-        type: DataTypes.UUID,
-        allowNull:false,
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
 
     content: {

@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const {models} = require("../models");
 const validateJWT = require("../middleware/validate-jwt");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 
 //post a comment to a review
@@ -13,7 +15,7 @@ router.post("/create", validateJWT, async (req,res) => {
     await models.CommentModel.create({
         review_id: newComment.review_id,
         user_id: req.user.id,
-        content: newComment.comment,
+        content: newComment.content,
         commenter_username: req.user.username,
         created_at: created_at
     })
@@ -24,12 +26,12 @@ router.post("/create", validateJWT, async (req,res) => {
 });
 
 //update comment
-router.put('/edit/comment_id', validateJWT, async (req, res) => {
+router.put('/edit/:comment_id', validateJWT, async (req, res) => {
     
     const updated_at = new Date();
     const updateComment = req.body.review;
 
-    models.CommentModel.update({
+    await models.CommentModel.update({
         content: updateComment.content,
         update_at: updated_at
     }, {
@@ -46,7 +48,7 @@ router.put('/edit/comment_id', validateJWT, async (req, res) => {
 
 // delete comment
 router.delete('/delete/:comment_id', validateJWT, async (req,res) => {
-    models.CommentModel.destory({
+    await models.CommentModel.destroy({
         where: {
             id: req.params.comment_id
         }
@@ -59,7 +61,7 @@ router.delete('/delete/:comment_id', validateJWT, async (req,res) => {
 });
 
 // get comment
-router.get('/comment/review_id', async (req,res) => {
+router.get('/comment/:review_id', async (req,res) => {
    await  models.CommentModel.findAll({
         where: {
             review_id: req.params.review_id
