@@ -98,4 +98,15 @@ router.get("/size/:size", async(req,res) => {
       error: err
   }))
 });
+
+
+//get all drink notes 
+router.get("getAll/", async(req,res) => {
+    try {
+        const allNotes = await models.DrinkNoteModel.findAll();
+        res.status(200).json(allNotes);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
+});
 module.exports = router;
