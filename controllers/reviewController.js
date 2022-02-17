@@ -53,19 +53,11 @@ router.get('/',  async (req, res) => {
                     content: review.content,
                     rating: review.rating,
                     created_at: review.created_at,
-                    comment: reviews.comment?.map( comment => {
+                    
 
-
-                        return Object.assign(
-                            {},
-                            {
-                                comment_id: comment.id,
-                                review_id: comment.review_id,
-                                commenter_username: comment.commenter_username,
-                                content: comment.content
-                            }  
-                        )
-                    })
+ 
+                        
+                
                 }
             )
         })
