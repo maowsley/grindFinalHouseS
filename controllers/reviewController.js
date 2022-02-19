@@ -30,15 +30,11 @@ router.post("/create", validateJWT, async (req,res) => {
     })
 });
 
-//get all reviews with comments works
+//get all reviews
 
 router.get('/',  async (req, res) => {
     await models.ReviewModel.findAll({
-        include: [
-            {
-                 model:  models.CommentModel,
-            }
-        ]
+   
     })
 
     .then(reviews => {

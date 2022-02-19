@@ -17,9 +17,6 @@ app.use("/drinkNote", controllers.drinkNoteController);
 
 app.use("/reviews", controllers.reviewController);
 
-app.use("/comments", controllers.commentController);
-
-app.use("/coffee", controllers.coffeesearchController);
 
 try {
 dbConnection.authenticate()

@@ -24,7 +24,8 @@ const User= db.define("user", {
     },
     role: {
         type: DataTypes.ENUM,
-        values: ["user", "admin", "diasabled"],
+        values: ["user", "admin"],
+        defaultValue: "user",
     },
 });
         

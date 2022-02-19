@@ -99,16 +99,12 @@ router.post("/login", async (req,res ) => {
     // GET admin
 router.get('/admin', (req, res) => {
     models.UserModel.findAll({
-        include: [
-            {
-                model: models.ReviewModel,
-                include: [
-                    {
-                        model: models.CommentModel
-                    }
-                ]
-            }
-        ]
+            include: [
+                {
+                    model: models.ReviewModel
+                }
+            ]
+
     }).then(users => {
         const resObj = users.map(user => {
 
@@ -128,19 +124,8 @@ router.get('/admin', (req, res) => {
                                 review_id: review.id,
                                 user_id: review.user_id,
                                 content: review.content,
-                                comment: review.comment.map(comment => {
-
-                                    //  comment data
-                                    return Object.assign(
-                                        {},
-                                        {
-                                            comment_id: comment.id,
-                                            review_id: comment.review_id,
-                                            commenter: comment.commenter_username,
-                                            content: comment.content
-                                        }
-                                    )
-                                })
+                                
+                              
                             }
                         )
                     })

@@ -101,7 +101,7 @@ router.get("/size/:size", async(req,res) => {
 
 
 //get all drink notes 
-router.get("getAll/", async(req,res) => {
+router.get("/", async(req,res) => {
     try {
         const allNotes = await models.DrinkNoteModel.findAll();
         res.status(200).json(allNotes);
