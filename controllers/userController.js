@@ -17,7 +17,7 @@ router.post("/signup", async (req,res) => {
         let User = await models.UserModel.create({
             username,
             password: bcrypt.hashSync(password, 10),
-            role: role
+            
             
         });
 
