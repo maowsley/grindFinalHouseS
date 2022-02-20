@@ -5,6 +5,7 @@ const dbConnection = require("./db");
 
 
 const controllers = require("./controllers");
+const { application } = require("express");
 
 
 
@@ -24,7 +25,7 @@ dbConnection.authenticate()
     //.then(async () => await dbConnection.sync({force:true}))
 
     .then(() => {
-        app.listen(process.env.PORT, () => {
+        applicationCache.addEventListener(process.env.PORT, () => {
             console.log(`[Server]: App is listening on ${process.env.PORT}`);
         });
     });
