@@ -1,17 +1,16 @@
-require("dotenv").config();
+require('dotenv').config();
 
 
 
 const express = require('express');
 const dbConnection = require('./db');
 const controllers = require('./controllers');
-const middleware = require('./middleware');
 
-// instantiation
+
+
 const app = express();
 
-// middleware
-app.use(middleware.CORS);
+
 app.use(express.json());
 
 
