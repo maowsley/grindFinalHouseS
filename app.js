@@ -1,16 +1,19 @@
 require("dotenv").config();
-const Express = require("express");
-const app = Express();
-const dbConnection = require("./db");
-
-
-const controllers = require("./controllers");
 
 
 
+const express = require('express');
+const dbConnection = require('./db');
+const controllers = require('./controllers');
+const middleware = require('./middleware');
 
+// instantiation
+const app = express();
 
-app.use(Express.json());
+// middleware
+app.use(middleware.CORS);
+app.use(express.json());
+
 
 app.use("/user", controllers.userController)
 
