@@ -3,6 +3,7 @@ const {models} = require("../models")
 const {UniqueConstraintError} = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const controllers = require(".");
 
 //Register new user endpoint works 
 
@@ -28,6 +29,7 @@ router.post("/signup", async (req,res) => {
             user: User,
             sessionToken: token
         });
+        console.log(message);
     } catch (err) {
         if (err instanceof UniqueConstraintError) {
             res.status(409).json({
@@ -72,7 +74,9 @@ router.post("/login", async (req,res ) => {
                     loginUser: loginUser,
                     message: "Welcome back to the GrindHouse!",
                     sessionToken: token
+                    
                 });
+                console.log(message);
                 
             } else {
                 res.status(401).json({
