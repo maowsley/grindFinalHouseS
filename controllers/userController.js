@@ -3,7 +3,6 @@ const {models} = require("../models")
 const {UniqueConstraintError} = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const controllers = require(".");
 
 //Register new user endpoint works 
 
@@ -29,7 +28,7 @@ router.post("/signup", async (req,res) => {
             user: User,
             sessionToken: token
         });
-        console.log(message);
+      
     } catch (err) {
         if (err instanceof UniqueConstraintError) {
             res.status(409).json({
@@ -98,47 +97,6 @@ router.post("/login", async (req,res ) => {
     });
 
 
-
-
-    // GET admin
-router.get('/admin', (req, res) => {
-    models.UserModel.findAll({
-            include: [
-                {
-                    model: models.ReviewModel
-                }
-            ]
-
-    }).then(users => {
-        const resObj = users.map(user => {
-
-            //  user data
-            return Object.assign(
-                {},
-                {
-                    user_id: user.id,
-                    username: user.username,
-                    role: user.role,
-                    review: user.review.map(review => {
-
-                        // review data
-                        return Object.assign(
-                            {},
-                            {
-                                review_id: review.id,
-                                user_id: review.user_id,
-                                content: review.content,
-                                
-                              
-                            }
-                        )
-                    })
-                }
-            )
-        })
-        res.json(resObj)
-    })
-})
 
 module.exports = router;
 

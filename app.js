@@ -12,10 +12,12 @@ const app = express();
 
 app.use(middleware.CORS);
 app.use(express.json());
+
+
 app.use("/user", controllers.userController)
 app.use("/drinkNote", controllers.drinkNoteController);
 app.use("/reviews", controllers.reviewController);
-app.use(require('./middleware/headers'));
+
 
 try {
 dbConnection.authenticate()
