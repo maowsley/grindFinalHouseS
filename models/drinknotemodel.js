@@ -1,17 +1,13 @@
-const {DataTypes, Sequelize} = require("sequelize");
+const {DataTypes} = require("sequelize");
 const db = require("../db");
 
 const DrinkNote = db.define("drinkNote", {
-    /*id: {
-        type: DataTypes.INTEGER,
+    id: {
+        type: DataTypes.UUID,
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false
-    }, */
-
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
+    }, 
 
     user_username: {
         type: DataTypes.STRING

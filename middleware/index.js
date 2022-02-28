@@ -1,5 +1,4 @@
 module.exports = {
-    validateJWT: require('./validate-jwt'),
-    CORS: require('./headers')
-   
+    validateJWT: require('./validate-jwt')
+    
 };

@@ -3,17 +3,13 @@ const db = require("../db");
 
 const Review = db.define("reviews", { 
     
-    /*id: {
-        type: DataTypes.INTEGER,
+    id: {
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.INTEGER
-    }, */
-
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        defaultValue: DataTypes.UUIDV4
     },
+  
 
     user_username: {
         type: DataTypes.STRING
@@ -39,8 +35,6 @@ const Review = db.define("reviews", {
         allowNull: false
     },
     updated_at: DataTypes.DATE, 
-    }, {
-    underscord: true
     }
 );
 

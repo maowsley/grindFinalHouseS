@@ -4,12 +4,12 @@ const db = require("../db");
 const User= db.define("user", {
 
 
-    /*id: {
-        type: DataTypes.INTEGER,
+    id: {
+        type: DataTypes.UUID,
         primaryKey: true,
-        defaultValue: DataTypes.INTEGER,
-        allowNull: false */
-    
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false 
+    },
     username: {
         type: DataTypes.STRING(100),
         required: true,

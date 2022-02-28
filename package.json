@@ -1,29 +1,25 @@
 {
-  "name": "grindhouse",
+  "name": "newghserver",
   "version": "1.0.0",
-  "description": "grindhouse backend",
+  "description": "newGHServer",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon"
   },
-  "devDependencies": {
-    "nodemon": "^1.19.4"
-  },
-  "author": "michelle owsley",
+  "author": "Michelle Owsley",
   "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.1",
+    "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.12.0-alpha.1"
-  },
-  "engines": {
-    "node": "16.13.1"
+    "sequelize": "^6.13.0"
   }
 }

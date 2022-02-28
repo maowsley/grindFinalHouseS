@@ -14,20 +14,12 @@ const ReviewModel = require("./reviewmodel");
 
 
 
-ReviewModel.belongsTo(UserModel, {
-    foreignKey: {
-        name: 'createdBy'
-    }
-});
+ReviewModel.belongsTo(UserModel);
 
 UserModel.hasMany(ReviewModel);
 
 UserModel.hasMany(DrinkNoteModel);
-DrinkNoteModel.belongsTo(UserModel, {
-    foreignKey: {
-        name: 'createdBy'
-    }
-});
+DrinkNoteModel.belongsTo(UserModel)
 
 
 

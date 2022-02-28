@@ -9,9 +9,9 @@ const validateJWT = require("../middleware/validate-jwt");
 router.post('/create', validateJWT,  async (req,res) => {
     const newNote = req.body.drinkNote;
 
-
+    try {
      await models.DrinkNoteModel.create({
-        user_id: req.user.id,
+        userId: req.user.id,
         user_username: req.user.username,
         drinkName: newNote.drinkName,
         drinkTemp: newNote.drinkTemp,
@@ -19,13 +19,20 @@ router.post('/create', validateJWT,  async (req,res) => {
         size: newNote.size
     })
 
-    .then( drinkNote => {
-        res.json(drinkNote);
-    })
-    .catch(err => {
-        res.json(err)
-    })
-});
+    .then(
+        note => {
+            res.status(201).json({
+                note: note,
+                message:'coffee note created'
+            });
+        }
+    )
+    } catch (err) {
+        res.status(500).json({
+            error: `Failed to create coffee note: ${err}`
+        });
+    }
+}); 
 
 //update note works 
 router.put('/edit/:drinkNote_id', validateJWT, async (req, res) => {

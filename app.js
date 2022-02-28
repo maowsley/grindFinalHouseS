@@ -1,40 +1,29 @@
-require('dotenv').config();
+require("dotenv").config()
+const Express = require("express");
+const app = Express();
+const dbConnection = require("./db");
 
+app.use(require("./middleware/headers"));
 
+const controllers = require("./controllers");
 
-const express = require('express');
-const dbConnection = require('./db');
-const controllers = require('./controllers');
-const middleware = require('./middleware');
-const app = express();
-
-
-
-app.use(middleware.CORS);
-app.use(express.json());
-
-
-app.use("/user", controllers.userController)
+app.use(Express.json());
+app.use(require('./middleware/headers'));
+app.use("/user", controllers.userController);
 app.use("/drinkNote", controllers.drinkNoteController);
 app.use("/reviews", controllers.reviewController);
 
 
-try {
 dbConnection.authenticate()
-    .then(async () => await dbConnection.sync())
-    //.then(async () => await dbConnection.sync({force:true}))
-
+    .then(() => dbConnection.sync())
+    //.then(() => dbConnection.sync({force:true}))
     .then(() => {
         app.listen(process.env.PORT, () => {
-            console.log(`[Server]: App is listening on ${process.env.PORT}`);
-        });
-    });
+            console.log(`[Server]: App is listening on ${process.env.PORT}.`)
+        })
+    })
+    .catch((err) => {
+        console.log(`[Server]: Server crashed. Error = ${err}`)
+    })
 
-
-} catch( err)
- {
-     console.log('[Server]: server crashed');
-     console.log(err);
- }
-
- 
+module.exports = app;

@@ -11,24 +11,30 @@ router.post("/create", validateJWT, async (req,res) => {
     const created_at = new Date();
     const newReview = req.body.review;
 
-
-    await models.ReviewModel.create({
-        user_id: req.user.id,
-        user_username: req.user.username,
-        title: newReview.title,
-        content: newReview.content,
-        rating: newReview.rating,
-        created_at: created_at
-    })
-
-    .then(review => {
-        res.json(review);
-    })
-
-    .catch(err => {
-        res.json(err)
-    })
-});
+    try {
+        await models.ReviewModel.create({
+            userId: req.user.id,
+            user_username: req.user.username,
+            title: newReview.title,
+            content: newReview.content,
+            rating: newReview.rating,
+            created_at: created_at
+        })
+        
+    .then(
+        review => {
+            res.status(201).json({
+                review: review,
+                message:'Thank you for reviewing GrindHouse'
+            });
+        }
+    )
+    } catch (err) {
+        res.status(500).json({
+            error: `Failed to post review. Please try again: ${err}`
+        });
+    }
+}); 
 
 //get all reviews
 

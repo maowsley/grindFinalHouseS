@@ -44,6 +44,34 @@ router.post("/signup", async (req,res) => {
 
 });
 
+router.get('./userinfo', async (req,res) => {
+    try {
+        await models.UserModel.findAll({
+            include: [
+                {
+                    model: models.DrinkNoteModel,
+                   include: [
+                       {
+                           model: models.ReviewModel
+                       }
+                   ] 
+                }
+            ]
+        })
+        .then(
+            users => {
+                res.status(200).json({
+                    users: users
+                });
+            }
+        )
+    } catch (err) {
+        res.status(500).json({
+            error: `Failed to retreive users: ${err}`
+        });
+    };
+});
+
 
 
 
@@ -99,5 +127,4 @@ router.post("/login", async (req,res ) => {
 
 
 module.exports = router;
-
 
