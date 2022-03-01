@@ -1,4 +1,3 @@
 module.exports = {
-    validateJWT: require('./validate-jwt')
-    
+  validateJWT: require("./validate-jwt"),
 };
